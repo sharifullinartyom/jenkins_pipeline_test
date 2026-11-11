@@ -2,7 +2,7 @@ pipeline {
     agent none
 
     environment {
-        NEXUS      = '45.155.205.81:8124'
+        NEXUS      = '45.155.205.81:8123'
         APP        = 'my-java-app'
         IMAGE      = "${NEXUS}/${APP}"
         TAG        = "${env.TAG}"
