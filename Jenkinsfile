@@ -35,8 +35,10 @@ pipeline {
         stage ('Deploy project') {
             agent { label 'deploy' }
             steps{
-                docker.withRegistry("http://${NEXUS}", 'nexus-docker-creds') {
-                    sh "docker pull ${IMAGE}:${TAG}"
+                script {                
+                    docker.withRegistry("http://${NEXUS}", 'nexus-docker-creds') {
+                        sh "docker pull ${IMAGE}:${TAG}"
+                    }
                 }
                 sh """
                         docker rm -f ${CONTAINER} || true
