@@ -32,5 +32,21 @@ pipeline {
                 }
             }
         }
+        stage ('Deploy project') {
+            agent { label 'deploy' }
+            steps{
+                docker.withRegistry("http://${NEXUS}", 'nexus-docker-creds') {
+                    sh "docker pull ${IMAGE}:${TAG}"
+                }
+                sh """
+                        docker rm -f ${CONTAINER} || true
+                        docker run -d \
+                          --name ${CONTAINER} \
+                          --restart unless-stopped \
+                          -p 8080:8080 \
+                          ${IMAGE}:${TAG}
+                """
+            }
+        }
     }
 }
